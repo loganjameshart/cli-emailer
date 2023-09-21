@@ -111,7 +111,5 @@ def main():
             break
 
 
-# add logic to send or not send, reviewing the whole message
-
 if __name__ == "__main__":
     main()
