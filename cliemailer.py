@@ -25,9 +25,7 @@ class Emailer:
             self.password = PASSWORD
 
         else:
-            self.login_info = self._get_login()
-            self.login_info[1]
-            self.login_info[0]
+            self.username, self.password = self._get_login()
 
         if SMTP_HOST and SMTP_PORT:
             self.smtp_host = SMTP_HOST
