@@ -2,6 +2,7 @@
 
 """
 Command line interface for sending emails.
+Author: Logan Hart 
 """
 
 import sys
@@ -16,7 +17,7 @@ EMAIL_REGEX = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-
 USERNAME = ""
 PASSWORD = ""
 SMTP_HOST = ""
-SMTP_PORT = ""
+SMTP_PORT = "" # make sure this is an int if you hardcode it
 
 
 class Emailer:
@@ -53,7 +54,7 @@ class Emailer:
         return (username, password)
 
     def _get_smtp(self):
-        """Get SMTP server information if none are provided."""
+        """Get SMTP server information if it is not provided."""
 
         server_name = input(">>> Please enter the SMTP server address: ")
         port = input(">>> Please enter the SMTP port: ")
@@ -74,7 +75,9 @@ class Emailer:
             print(e)
             sys.exit(1)
 
-    def _is_valid_email(email_address):
+    def _is_valid_email(self, email_address):
+        """Check email address's validity against regex."""
+        
         email_re = re.compile(EMAIL_REGEX)
         if not email_re.match(email_address):
             return False
@@ -82,6 +85,8 @@ class Emailer:
             return True
 
     def _get_valid_recipient(self):
+        """Get and validate inputted recipient email address(es)."""
+        
         while True:
             recipient = input(">>> Please enter the recipient: ")
             if self._is_valid_email(recipient):
@@ -91,6 +96,8 @@ class Emailer:
                 continue
 
     def _get_valid_subject(self):
+        """Get and validate subject line."""
+        
         while True:
             subject = input(">>> Please enter your subject: ")
             if subject:
@@ -98,6 +105,19 @@ class Emailer:
             else:
                 print(">>> Please enter a valid subject.")
                 continue
+
+    def _parse_recipient_input(self, recipient_input):
+        """Parse inputted recipients into sender list."""
+        
+        if ";" in recipient_input:
+            recipient_list = recipient_input.split(";")
+            return recipient_list
+        elif "," in recipient_input:
+            recipient_list = recipient_input.split(",")
+            return recipient_list
+        else:
+            recipient_list = [recipient_input]
+            return recipient_list
 
     def _get_message(self):
         """Get a multi-line message."""
@@ -120,7 +140,9 @@ class Emailer:
         msg["From"] = self.username
 
         while True:
-            msg["To"] = self._get_valid_recipient()
+            recipient_input = self._get_valid_recipient()
+            recipient_list = self._parse_recipient_input(recipient_input)
+            msg["To"] = ", ".join(recipient_list)
             decision = input(f">>> Is this correct? (Y/n) {msg['To']} ")
             if decision.lower() not in ("yes", "y"):
                 del msg["To"]  # need to completely clear the field in order to redo it
