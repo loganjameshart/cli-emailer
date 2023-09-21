@@ -38,18 +38,21 @@ class Emailer:
 
     def _get_login(self):
         """Get login credentials for email server if none are provided."""
+        
         username = input(">>> Please enter your username: ")
         password = getpass(prompt=">>> Please enter your password: ")
         return (username, password)
 
     def _get_smtp(self):
         """Get SMTP server information if none are provided."""
+        
         server_name = input(">>> Please enter the SMTP server address: ")
         port = input(">>> Please enter the SMTP port: ")
         return (server_name, int(port))
 
     def _connection(self):
         """Connect to SMTP server."""
+        
         try:
             smtp_connection = smtplib.SMTP(self.smtp_host, self.smtp_port)
             smtp_connection.ehlo()
@@ -63,6 +66,8 @@ class Emailer:
             sys.exit(1)
 
     def send_email(self):
+        '''Create and send email.'''
+        
         msg = EmailMessage()
         msg["From"] = self.username
         while True:
