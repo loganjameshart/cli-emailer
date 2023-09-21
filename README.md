@@ -1,2 +1,3 @@
-# cli-emailer
-Send emails from the command line.
+# quickmail
+
+## Send emails from the command line.
