@@ -1,5 +1,7 @@
 # Quickmail
 
+![quickmail logo](https://raw.githubusercontent.com/loganjameshart/quickmail/main/quickmail_logo.svg)
+
 Command line interface for sending emails.
 
 ## Overview
