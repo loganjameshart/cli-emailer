@@ -2,22 +2,27 @@
 
 """
 Command line interface for sending emails.
-Author: Logan Hart 
+Author: Logan Hart
 """
 
 import sys
 import re
 import smtplib
-from getpass import getpass
+import getpass
+import time
+from configparser import ConfigParser
 from email.message import EmailMessage
+
+parser = ConfigParser()
+parser.read("config.ini")
 
 EMAIL_REGEX = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""
 
+USERNAME = parser["Login"]["Username"]
+PASSWORD = parser["Login"]["Password"]
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = 587 # make sure this is an int if you hardcode it
 
-USERNAME = ""
-PASSWORD = ""
-SMTP_HOST = ""
-SMTP_PORT = "" # make sure this is an int if you hardcode it
 
 
 class Emailer:
@@ -50,7 +55,7 @@ class Emailer:
             else:
                 print(">>> Please use a valid email address.")
                 continue
-        password = getpass(prompt=">>> Please enter your password: ")
+        password = getpass.getpass(prompt=">>> Please enter your password: ")
         return (username, password)
 
     def _get_smtp(self):
@@ -65,8 +70,11 @@ class Emailer:
 
         try:
             smtp_connection = smtplib.SMTP(self.smtp_host, self.smtp_port)
+            time.sleep(1)
             smtp_connection.ehlo()
+            time.sleep(1)
             smtp_connection.starttls()
+            time.sleep(2) # we're not a bot
             smtp_connection.login(self.username, self.password)
             print(f">>> Connected to {self.smtp_host}.")
             return smtp_connection
@@ -77,7 +85,7 @@ class Emailer:
 
     def _is_valid_email(self, email_address):
         """Check email address's validity against regex."""
-        
+
         email_re = re.compile(EMAIL_REGEX)
         if not email_re.match(email_address):
             return False
@@ -86,7 +94,7 @@ class Emailer:
 
     def _get_valid_recipient(self):
         """Get and validate inputted recipient email address(es)."""
-        
+
         while True:
             recipient = input(">>> Please enter the recipient: ")
             if self._is_valid_email(recipient):
@@ -97,7 +105,7 @@ class Emailer:
 
     def _get_valid_subject(self):
         """Get and validate subject line."""
-        
+
         while True:
             subject = input(">>> Please enter your subject: ")
             if subject:
@@ -108,7 +116,7 @@ class Emailer:
 
     def _parse_recipient_input(self, recipient_input):
         """Parse inputted recipients into sender list."""
-        
+
         if ";" in recipient_input:
             recipient_list = recipient_input.split(";")
             return recipient_list
@@ -182,6 +190,7 @@ class Emailer:
 
 
 def main():
+    print(USERNAME, PASSWORD)
     mailer = Emailer()
 
     while True:
