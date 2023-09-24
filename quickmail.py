@@ -69,11 +69,8 @@ class Emailer:
 
         try:
             smtp_connection = smtplib.SMTP(self.smtp_host, self.smtp_port)
-            time.sleep(1)
             smtp_connection.ehlo()
-            time.sleep(1)
             smtp_connection.starttls()
-            time.sleep(2)  # we're not a bot
             smtp_connection.login(self.username, self.password)
             print(f">>> Connected to {self.smtp_host}.")
             return smtp_connection
