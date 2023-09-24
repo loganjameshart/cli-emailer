@@ -38,7 +38,7 @@ Before using this CLI tool, ensure you have the following prerequisites:
 
 2. Follow the on-screen prompts to provide the necessary information for sending an email:
 
-   - Enter your email username and password or SMTP server information if not provided in a config.ini file
+   - Enter your email username and password or SMTP server information if not provided in the `config.ini` file
    - Specify the recipient's email address or addresses (if multiple recipients, separate by a comma or semicolon).
    - Enter the email subject.
    - Compose the email message, pressing Enter twice to finish.
@@ -50,7 +50,7 @@ Before using this CLI tool, ensure you have the following prerequisites:
 
 ## Note
 
-- This script supports sending emails through an SMTP server. Make sure you have the correct SMTP server host and port information if it's not hardcoded in the script.
+- This script supports sending emails through an SMTP server. Make sure you have the correct SMTP server host and port information if it's not hardcoded in the `config.ini` file.
 
 - Ensure that your email account allows "less secure apps" or generate an "app password" if you encounter authentication issues.
 
