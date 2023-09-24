@@ -20,8 +20,8 @@ EMAIL_REGEX = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-
 
 USERNAME = parser["Login"]["Username"]
 PASSWORD = parser["Login"]["Password"]
-SMTP_HOST = "smtp.gmail.com"
-SMTP_PORT = 587  # make sure this is an int if you hardcode it
+SMTP_HOST = parser["Email"]["Server"]
+SMTP_PORT = int(parser["Email"]["Port"])  # make sure this is an int if you hardcode it
 
 
 class Emailer:
@@ -186,9 +186,7 @@ class Emailer:
 
 
 def main():
-    print(USERNAME, PASSWORD)
     mailer = Emailer()
-
     while True:
         mailer.send_email()
         decision = input(">>> Would you like to send another? (Y/n) ")
