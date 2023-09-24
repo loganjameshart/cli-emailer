@@ -21,8 +21,7 @@ EMAIL_REGEX = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-
 USERNAME = parser["Login"]["Username"]
 PASSWORD = parser["Login"]["Password"]
 SMTP_HOST = "smtp.gmail.com"
-SMTP_PORT = 587 # make sure this is an int if you hardcode it
-
+SMTP_PORT = 587  # make sure this is an int if you hardcode it
 
 
 class Emailer:
@@ -74,7 +73,7 @@ class Emailer:
             smtp_connection.ehlo()
             time.sleep(1)
             smtp_connection.starttls()
-            time.sleep(2) # we're not a bot
+            time.sleep(2)  # we're not a bot
             smtp_connection.login(self.username, self.password)
             print(f">>> Connected to {self.smtp_host}.")
             return smtp_connection
