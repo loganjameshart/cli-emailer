@@ -1,4 +1,4 @@
-![quickmail logo](https://raw.githubusercontent.com/loganjameshart/quickmail/main/.quickmail.svg)
+![quickmail logo](https://raw.githubusercontent.com/loganjameshart/quickmail/main/quickmail.svg)
 
 Command line interface for sending emails.
 
